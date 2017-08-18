@@ -6,5 +6,5 @@
 
 | Date           | Week | Assignment             |
 |----------------|------|------------------------|
-| 18 - 8 - 2017  | 1    | Structors and functors |
+| 18 - 8 - 2017  | 1    | Structures and functors |
 

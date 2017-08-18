@@ -3,4 +3,14 @@
 
 ## Course Instructor : Piyush-Kurur
 
-### Assignment 1 : Structors and functors
+
+| Date           | Week | Assignment             |
+|----------------|------|------------------------|
+| 18 - 8 - 2017  | 1    | Structors and functors |
+|                |      |                        |
+|                |      |                        |
+|                |      |                        |
+|                |      |                        |
+|                |      |                        |
+|                |      |                        |
+|                |      |                        |

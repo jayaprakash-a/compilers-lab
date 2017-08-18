@@ -14,3 +14,10 @@ type t = int;
 
 fun le a b = if (a <= b) then true else false 
 end
+structure RealOrd : ORD = 
+struct
+
+type t = real;
+
+fun le a b = if (a <= b) then true else false 
+end

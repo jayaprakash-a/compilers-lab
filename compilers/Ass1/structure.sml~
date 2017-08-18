@@ -19,5 +19,5 @@ struct
 
 type t = real;
 
-fun le a b = if ((a : real) <= (b : real)) then true else false 
+fun le a b = if ((a : real) <= b) then true else false 
 end

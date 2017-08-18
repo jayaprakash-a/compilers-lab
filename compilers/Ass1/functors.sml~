@@ -30,7 +30,7 @@ val (left, right) = List.partition(fn x => x <= first);*)
 
 fun qsort [] = [] 
  | qsort (first :: xs) = let 
-				val (right, left) = List.partition(X.le first) xs
+				val (left, right) = List.partition(X.le first) xs
 			   in 
 					qsort(left)@[first]@qsort(right) 
 			   end

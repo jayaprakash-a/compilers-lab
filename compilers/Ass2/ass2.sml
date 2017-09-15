@@ -1,11 +1,12 @@
 type startState = char;
-
-datatype terminal = char | nil;
+type terminal = string;
 
 datatype nonTerminal = NonTer of char;
 
+datatype symbol = terminal | nonTerminal;
 
-datatype rhs = nil | nonTerminal | terminal | RHS of (char * rhs);
+
+type rhs = symbol list;
 
 datatype rule = Rule of ( nonTerminal * rhs );
 
@@ -15,6 +16,12 @@ datatype cfg = Grammar of (startState * rule list ) ;
 
 
 
+fun first-loop [] = [] |
+	first-loop (x :: (x1 :: xs)) = first(x) @ first(x1);
 
 
 
+fun first [] = [] |
+	first (x :: (x1 :: xs)) = if first-loop(x) == []
+				then first(x1)
+				else first(x);

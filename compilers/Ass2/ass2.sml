@@ -44,6 +44,25 @@ structure AtomRedBlackMap =
 			val compare = Atom.compare
 		end)
 
+
+(*
+
+Grammar of balanced paranthesis.
+
+
+val start = NonTer("S");
+val ter_one = Ter("(");
+val ter_two = Ter(")");
+val rule_1 = Rule(start,Sym([T((), Nt(start), T())]));
+val rule_2 = Rule(start,Sym([]));
+
+
+val rule_list = [rule_1,rule_2];
+val example_grammar =  Grammar(start,rule_list);
+
+*)
+
+
 (*
 
 Write an ML function to compute the FIRST and FOLLOW of all non-terminals in your grammar. Implicit in this problem is to design an ML data type for storing this table.

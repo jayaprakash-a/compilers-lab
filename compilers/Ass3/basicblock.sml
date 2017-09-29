@@ -26,10 +26,10 @@ datatype graph = Graph of (adjacencylist list);
 
 fun getlist( Graph(adj_list)) = adj_list;
 
-fun getadjelements( List(node,adjelement) )= adjelement;
-fun getnode( List(node,adjelement)) = node;
+fun getadjelements( List(node, Adj(adjelement)) )= adjelement;
+fun getnode( List(node,Adj (adjelement))) = node;
 
 fun getverno(Node(x,y)) = x;
 
 fun nodeispresent [] Node(y1,y2) = false |
-nodeispresent (x :xs) Node(y1,y2)  =  getverno (getnode x) = y1 orelse nodeispresent xs Node(y1,y2);
+nodeispresent (xs) Node(y1,y2)  =  getverno (getnode hd xs) = y1 orelse nodeispresent tail xs Node(y1,y2);

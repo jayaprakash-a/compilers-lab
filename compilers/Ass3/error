@@ -1,0 +1,156 @@
+
+- use "basicblock.sml";
+[opening basicblock.sml]
+datatype vertex = Node of int * int
+datatype adjacent = Adj of vertex list
+datatype adjacencylist = List of vertex * adjacent
+datatype graph = Graph of adjacencylist list
+val getlist = fn : graph -> adjacencylist list
+val getadjelements = fn : adjacencylist -> adjacent
+val getnode = fn : adjacencylist -> vertex
+val getverno = fn : vertex -> int
+basicblock.sml:34.22-34.26 Error: data constructor Node used without argument in pattern
+basicblock.sml:35.23-35.27 Error: data constructor Node used without argument in pattern
+basicblock.sml:35.19-35.21 Error: unbound type constructor: xs
+basicblock.sml:35.86-35.88 Error: unbound variable or constructor: xs
+
+uncaught exception Error
+  raised at: ../compiler/TopLevel/interact/evalloop.sml:66.19-66.27
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- use "basicblock.sml";
+[opening basicblock.sml]
+datatype vertex = Node of int * int
+datatype adjacent = Adj of vertex list
+datatype adjacencylist = List of vertex * adjacent
+datatype graph = Graph of adjacencylist list
+val getlist = fn : graph -> adjacencylist list
+val getadjelements = fn : adjacencylist -> adjacent
+val getnode = fn : adjacencylist -> vertex
+val getverno = fn : vertex -> int
+val it = () : unit
+- 
+- 
+- val nd = Node(9,9);
+val nd = Node (9,9) : vertex
+- val ad = Adj[3,4,6];
+stdIn:5.5-5.20 Error: operator and operand don't agree [overload conflict]
+  operator domain: vertex list
+  operand:         [int ty] list
+  in expression:
+    Adj (3 :: 4 :: 6 :: nil)
+- val nd = Node[(1,2),(2,3)];
+stdIn:1.6-4.3 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: int * int
+  operand:         ([int ty] * [int ty]) list
+  in expression:
+    Node ((1,2) :: (2,3) :: nil)
+- val ad = Adj[Node(1,2),Node(1,5)]
+= ;
+val ad = Adj [Node (1,2),Node (1,5)] : adjacent
+- val li = List[(nd,ad)];
+stdIn:7.5-7.23 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: vertex * adjacent
+  operand:         (vertex * adjacent) list
+  in expression:
+    List ((nd,ad) :: nil)
+- ^C
+Interrupt
+- val li = [List[(nd,ad)]];
+stdIn:1.11-4.1 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: vertex * adjacent
+  operand:         (vertex * adjacent) list
+  in expression:
+    List ((nd,ad) :: nil)
+- 
+- val li = List(nd,ad);
+val li = List (Node (9,9),Adj [Node #,Node #]) : adjacencylist
+- val myg = Graph([li]);
+val myg = Graph [List (Node #,Adj #)] : graph
+- val fli = getlist(myg);
+val fli = [List (Node (#,#),Adj [#,#])] : adjacencylist list
+- fli;
+val it = [List (Node (#,#),Adj [#,#])] : adjacencylist list
+- fun getelement(x:xs) = x;
+stdIn:12.18-12.20 Error: unbound type constructor: xs
+- 
+- 
+- 
+- use"basicblock.sml";
+[opening basicblock.sml]
+datatype vertex = Node of int * int
+datatype adjacent = Adj of vertex list
+datatype adjacencylist = List of vertex * adjacent
+datatype graph = Graph of adjacencylist list
+val getlist = fn : graph -> adjacencylist list
+val getadjelements = fn : adjacencylist -> adjacent
+val getnode = fn : adjacencylist -> vertex
+val getverno = fn : vertex -> int
+basicblock.sml:34.22-34.26 Error: data constructor Node used without argument in pattern
+basicblock.sml:35.24-35.28 Error: data constructor Node used without argument in pattern
+
+uncaught exception Error
+  raised at: ../compiler/TopLevel/interact/evalloop.sml:66.19-66.27
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+- 
+- fun getelement(x::xs) = x;
+stdIn:17.5-17.26 Warning: match nonexhaustive
+          x :: xs => ...
+  
+val getelement = fn : 'a list -> 'a
+- fun getelement [] = [];
+stdIn:18.5-18.23 Warning: match nonexhaustive
+          nil => ...
+  
+val getelement = fn : 'a list -> 'b list
+- ^C  
+Interrupt
+- fun getelement [] = [] | getelement(x::xs) = x;
+val getelement = fn : 'a list list -> 'a list
+- val no = getnode(getelement fli);
+stdIn:19.18-19.32 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: 'Z list list
+  operand:         ?.adjacencylist list
+  in expression:
+    getelement fli
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- val no = getelement fli;
+stdIn:27.5-27.24 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: 'Z list list
+  operand:         ?.adjacencylist list
+  in expression:
+    getelement fli
+- val no = hd fli;
+val no = List (Node (9,9),Adj [Node #,Node #]) : ?.adjacencylist
+- val n  = getverno no;
+stdIn:28.5-28.21 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: vertex
+  operand:         ?.adjacencylist
+  in expression:
+    getverno no
+- val n = getnode no;
+stdIn:23.1-28.2 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: adjacencylist
+  operand:         ?.adjacencylist
+  in expression:
+    getnode no
+- no;
+val it = List (Node (9,9),Adj [Node #,Node #]) : ?.adjacencylist
+- fun getelement [] = []
+= 
+= ;
+stdIn:29.5-29.23 Warning: match nonexhaustive
+          nil => ...
+  
+val getelement = fn : 'a list -> 'b list
+- 
+

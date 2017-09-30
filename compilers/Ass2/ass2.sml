@@ -56,7 +56,7 @@ val rule_5 = Rule(non_ter_A,[T(ter_one), Nt(non_ter_A)]);
 val rule_6 = Rule(non_ter_B,[T(ter_two), Nt(non_ter_B)]);
 
 
-val rule_list = [rule_1,rule_2, rule_3, rule_4,rule_5,rule_6];
+val rule_list = [rule_1,rule_2, rule_3,rule_4,rule_5, rule_6];
 val example_grammar =  Grammar(start,rule_list);
 
 
@@ -74,20 +74,20 @@ val map_nullable = AtomRedBlackMap.empty
 
 (*check if a symbol is present in map or not*)
 
-fun is_not_present_in_map(Nt(X),map_nullable) = if AtomRedBlackMap.find(map_nullable,Nt(X)) = NONE
+fun is_present_in_map(Nt(X),map_nullable) = if AtomRedBlackMap.find(map_nullable,Nt(X)) = NONE
 										then
-											true
-										else false
-	| is_not_present_in_map(T(X),map_nullable) =
+											false
+										else true
+	| is_present_in_map(T(X),map_nullable) =
 		if AtomRedBlackMap.find(map_nullable,T(X)) = NONE
 		then
-			true
-		else false;
+			false
+		else true;
 
 (*Check if rule is empty or if symbols belong to the nullables set until the entire rhs aprt finishes*)
 fun  find_symbol_list([],map_nullable) = true |
 	find_symbol_list(sym :: sym_list,map_nullable) = 
-			is_not_present_in_map(sym,map_nullable) andalso find_symbol_list(sym_list,map_nullable);
+			is_present_in_map(sym,map_nullable) andalso find_symbol_list(sym_list,map_nullable);
 
 
 
@@ -95,7 +95,7 @@ fun get_rule_rhs(Rule(nonterm, rhs)) = rhs;
 
 (*Check if rule is empty and then insert the nullable non terminal accordingly*)
 
-fun save_in_map(map_nullable,Rule(nonterm,[])) = map_nullable |
+fun save_in_map(map_nullable,Rule(nonterm,[])) = AtomRedBlackMap.insert(map_nullable,Nt(nonterm),true) |
 	save_in_map(map_nullable,Rule(nonterm,sym :: sym_list)) = 
 		if find_symbol_list(get_rule_rhs(Rule(nonterm, sym :: sym_list)),map_nullable) = true
 		then

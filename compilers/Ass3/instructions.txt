@@ -1,0 +1,85 @@
+val ex_graph = Graph.mygraph
+
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 1),(vertex_base_type.Node 2));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 2),(vertex_base_type.Node 3));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 3),(vertex_base_type.Node 4));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 4),(vertex_base_type.Node 5));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 5),(vertex_base_type.Node 6));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 6),(vertex_base_type.Node 7));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 7),(vertex_base_type.Node 8));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 1),(vertex_base_type.Node 5));
+
+val answer = list_basic_block_all_nodes(ex_graph, Graph.list_nodes(ex_graph));
+val answer = removeduplicate(answer);
+
+Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 1, []);
+Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 2, []);
+Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 3, []);
+Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 4, []);
+Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 5, []);
+Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 6, []);
+Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 7, []);
+Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 8, []);
+
+
+Graph.successor(ex_graph, vertex_base_type.Node 1);
+Graph.successor(ex_graph, vertex_base_type.Node 2);
+Graph.successor(ex_graph, vertex_base_type.Node 3);
+Graph.successor(ex_graph, vertex_base_type.Node 4);
+Graph.successor(ex_graph, vertex_base_type.Node 5);
+Graph.successor(ex_graph, vertex_base_type.Node 6);
+Graph.successor(ex_graph, vertex_base_type.Node 7);
+Graph.successor(ex_graph, vertex_base_type.Node 8);
+
+Graph.list_nodes(ex_graph);
+
+
+calculate_predecessor_chain(ex_graph, vertex_base_type.Node 1);
+calculate_predecessor_chain(ex_graph, vertex_base_type.Node 2);
+calculate_predecessor_chain(ex_graph, vertex_base_type.Node 3);
+calculate_predecessor_chain(ex_graph, vertex_base_type.Node 4);
+calculate_predecessor_chain(ex_graph, vertex_base_type.Node 5);
+calculate_predecessor_chain(ex_graph, vertex_base_type.Node 6);
+calculate_predecessor_chain(ex_graph, vertex_base_type.Node 7);
+calculate_predecessor_chain(ex_graph, vertex_base_type.Node 8);
+
+calculate_successor_chain(ex_graph, vertex_base_type.Node 1);
+calculate_successor_chain(ex_graph, vertex_base_type.Node 2);
+calculate_successor_chain(ex_graph, vertex_base_type.Node 3);
+calculate_successor_chain(ex_graph, vertex_base_type.Node 4);
+calculate_successor_chain(ex_graph, vertex_base_type.Node 5);
+calculate_successor_chain(ex_graph, vertex_base_type.Node 6);
+calculate_successor_chain(ex_graph, vertex_base_type.Node 7);
+calculate_successor_chain(ex_graph, vertex_base_type.Node 8);
+
+val p_chain = Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 1, []);
+val s_chain = Graph.successor(ex_graph, vertex_base_type.Node 1);
+valid_no_of_links(p_chain) andalso valid_no_of_links(s_chain);
+
+val p_chain = Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 2, []);
+val s_chain = Graph.successor(ex_graph, vertex_base_type.Node 2);
+valid_no_of_links(p_chain) andalso valid_no_of_links(s_chain);
+
+val p_chain = Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 3, []);
+val s_chain = Graph.successor(ex_graph, vertex_base_type.Node 3);
+valid_no_of_links(p_chain) andalso valid_no_of_links(s_chain);
+
+val p_chain = Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 4, []);
+val s_chain = Graph.successor(ex_graph, vertex_base_type.Node 4);
+valid_no_of_links(p_chain) andalso valid_no_of_links(s_chain);
+
+val p_chain = Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 5, []);
+val s_chain = Graph.successor(ex_graph, vertex_base_type.Node 5);
+valid_no_of_links(p_chain) andalso valid_no_of_links(s_chain);
+
+val p_chain = Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 6, []);
+val s_chain = Graph.successor(ex_graph, vertex_base_type.Node 6);
+valid_no_of_links(p_chain) andalso valid_no_of_links(s_chain);
+
+val p_chain = Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 7, []);
+val s_chain = Graph.successor(ex_graph, vertex_base_type.Node 7);
+valid_no_of_links(p_chain) andalso valid_no_of_links(s_chain);
+
+val p_chain = Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 8, []);
+val s_chain = Graph.successor(ex_graph, vertex_base_type.Node 8);
+valid_no_of_links(p_chain) andalso valid_no_of_links(s_chain);

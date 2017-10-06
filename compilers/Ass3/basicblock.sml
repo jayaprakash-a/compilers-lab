@@ -135,7 +135,8 @@ fun list_basic_block_all_singular(block_map, mygraph, []) = block_map
                                         				end
 
 
-fun check_fixed_point(block_map, node::nodes, mygraph) =
+fun check_fixed_point(block_map, [], mygraph) = block_map
+	| check_fixed_point(block_map, node::nodes, mygraph) =
 
 			let val block_map_new = list_basic_block_all_singular(block_map, mygraph, node::nodes) in
 
@@ -159,16 +160,16 @@ fun removeduplicate [] = []
 
 val ex_graph = Graph.mygraph
 
-val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 1),(vertex_base_type.Node 2));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 4),(vertex_base_type.Node 2));
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 2),(vertex_base_type.Node 3));
-val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 3),(vertex_base_type.Node 4));
-val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 4),(vertex_base_type.Node 5));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 3),(vertex_base_type.Node 1));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 1),(vertex_base_type.Node 5));
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 5),(vertex_base_type.Node 6));
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 6),(vertex_base_type.Node 7));
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 7),(vertex_base_type.Node 8));
-val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 1),(vertex_base_type.Node 5));
-val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 1),(vertex_base_type.Node 4));
-val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 8),(vertex_base_type.Node 1));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 4),(vertex_base_type.Node 5));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 4),(vertex_base_type.Node 1));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 8),(vertex_base_type.Node 4));
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 3),(vertex_base_type.Node 5));
 
 val answer = list_basic_block_all_nodes(ex_graph, Graph.list_nodes(ex_graph));

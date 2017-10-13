@@ -10,43 +10,41 @@ structure MapT = RedBlackMapFn (
 				struct type ord_key = Graph.node
 					   val compare = Graph.compare
 				end)
-val mygraph = MapT.empty
+val suc_graph = MapT.empty
 
+val pred_graph = MapT.empty
 (*Function to add edges*)
-fun add_edge(mygraph,node,adj_ver)  = if MapT.find(mygraph,node) = NONE then MapT.insert(mygraph,node,[adj_ver])
+fun add_edge_succ(suc_graph,node,adj_ver)  = 
+			if MapT.find(suc_graph,node) = NONE then MapT.insert(suc_graph,node,[adj_ver])
                                     else
-                                      let val SOME(x) = MapT.find(mygraph,node) in
-                                          MapT.insert(mygraph,node,adj_ver::x)
-                                          (*if MapT.find(mygraph,adj_ver) = NONE then
-                                          	MapT.insert(mygraph,adj_ver,[]:Graph.node list) 
-                                      	  else 
-                                      		let val SOME(y) = MapT.find(mygraph,adj_ver) in
-                                      			MapT.insert(mygraph,adj_ver,y)
-                                      		end*)
+                                      let val SOME(x) = MapT.find(suc_graph,node) in
+                                          MapT.insert(suc_graph,node,adj_ver::x)
+                                   
+                                      end
+				
+fun add_edge_pred(pred_graph,node,adj_ver)  = if MapT.find(pred_graph,node) = NONE then MapT.insert(pred_graph,node,[adj_ver])
+                                    else
+                                      let val SOME(x) = MapT.find(pred_graph,node) in
+                                          MapT.insert(pred_graph,node,adj_ver::x)
+                                   
                                       end;
 
-
 (*Returns the list of nodes that have an edge from given node*)
-fun successor(mygraph,node) = if MapT.find(mygraph,node) = NONE then []
+fun successor(suc_graph,node) = if MapT.find(suc_graph,node) = NONE then []
                               else
-	                            let val SOME(x) = MapT.find(mygraph,node) in 
+	                            let val SOME(x) = MapT.find(suc_graph,node) in 
 	                            	x 
 	                            end;
 
-fun list_nodes(mygraph) = MapT.listKeys(mygraph)
+fun list_nodes(suc_graph) = MapT.listKeys(suc_graph)
 
-(*To check if the node is adjacent to node. This is calculated by checking if given node is presnt in adjacency list of node*)
-fun is_given_node_adjacent([], node) = false
-	| is_given_node_adjacent(adj_list, node) = if List.find (fn y => (y = node)) adj_list = NONE then false
-											 else true
 
 (*Returns the list of nodes that have an edge to given node*)
-fun predecessor(mygraph, [], node, pred) = pred
-    | predecessor(mygraph, key::key_list, node, pred) =  let val SOME(adj_list) = MapT.find(mygraph,key)
-                                                val new_pred =  if is_given_node_adjacent(adj_list, node) 
-                                                then key::pred else pred in
-                                                predecessor(mygraph, key_list, node, new_pred)
-                                              end
+fun predecessor(pred_graph,node) = if MapT.find(pred_graph,node) = NONE then []
+                              else
+	                            let val SOME(x) = MapT.find(pred_graph,node) in 
+	                            	x 
+	                            end;
 end
 
 structure vertex_base_type =
@@ -108,13 +106,7 @@ fun calculate_successor_chain(mygraph, node, prev_list) = let val suc_list = Gra
 	                                    [node]
 	                            
                                end
- (*                                 
-fun exceptlast [] = []
-	| exceptlast [x] = []
-	| exceptlast (x::xs) = x::exceptlast(xs)
-
-*)
-
+ 
 
 fun list_basic_block_node(mygraph, node) = let val p_chain = removeduplicate(calculate_predecessor_chain(mygraph, node,[]))in
 
@@ -123,20 +115,9 @@ fun list_basic_block_node(mygraph, node) = let val p_chain = removeduplicate(cal
 	                                         	p_chain@(tl s_chain)
 	                                        end
 											end
-(*
-fun list_basic_block_node(mygraph, node) = let val p_chain = calculate_predecessor_chain(mygraph, node)
-                                        	val s_chain = calculate_successor_chain(mygraph, node) in
-                                        	 if(valid_no_of_links(calculate_predecessor_chain(mygraph, hd p_chain)) andalso valid_no_of_links(calculate_successor_chain(mygraph, hd p_chain)) ) then
-                                        		if(s_chain = []) then 
-                                        			(exceptlast(tl p_chain) )@[node]
-                                        		else
-	                                            	(exceptlast(tl p_chain) )@[node]@(tl s_chain)
-	                                         else 
-	                                         	if(s_chain = []) then 
-                                        			(exceptlast(p_chain) )@[node]
-                                        		else
-	                                            	(exceptlast(p_chain) )@[node]@(tl s_chain)
-	                                        end
+
+fun list_basic_block_all_nodes(mygraph, []) = []
+	| list_basic_block_all_nodes(mygraph, node::nodes) = removeduplicate(list_basic_block_node(mygraph, node))::(list_basic_block_all_nodes(mygraph, nodes)) 
 
 
 structure AtomRedBlackMap =
@@ -146,39 +127,16 @@ structure AtomRedBlackMap =
 			val compare = fn (x,y) => Int.compare(x,y)
 		end)
 
-val block_map = AtomRedBlackMap.empty
+val in_map = AtomRedBlackMap.empty
 
-fun getint(vertex_base_type.Node(x)) = x
+structure AtomRedBlackMap =
+	RedBlackMapFn (
+		struct
+			type ord_key = int
+			val compare = fn (x,y) => Int.compare(x,y)
+		end)
 
-fun list_basic_block_all_singular(block_map, mygraph, []) = block_map
-	| list_basic_block_all_singular(block_map, mygraph, node::nodes) = let val p_chain = Graph.predecessor(mygraph, Graph.list_nodes(mygraph), node, [])
-                                        								val s_chain = Graph.successor(mygraph, node)  in
-		                                        			if(valid_no_of_links(p_chain) andalso valid_no_of_links(s_chain)) then 
-		                                        				list_basic_block_all_singular(block_map, mygraph,nodes)
-
-		                                        			else 
-		                                        				if(AtomRedBlackMap.find(block_map, getint(node))) = NONE then
-		                                        					AtomRedBlackMap.insert(block_map,getint(node),true)
-		                                        				else block_map
-                                        				end
-
-
-fun check_fixed_point(block_map, [], mygraph) = block_map
-	| check_fixed_point(block_map, node::nodes, mygraph) =
-
-			let val block_map_new = list_basic_block_all_singular(block_map, mygraph, node::nodes) in
-
-			if ( AtomRedBlackMap.listItems(block_map) = AtomRedBlackMap.listItems(block_map_new) )
-			then block_map_new
-			else
-				check_fixed_point(block_map_new, nodes, mygraph)
-			end;
-*)
-fun list_basic_block_all_nodes(mygraph, []) = []
-	| list_basic_block_all_nodes(mygraph, node::nodes) = removeduplicate(list_basic_block_node(mygraph, node))::(list_basic_block_all_nodes(mygraph, nodes)) 
-
-
-               
+val out_map = AtomRedBlackMap.empty              
 
 val ex_graph = Graph.mygraph  
 
@@ -216,6 +174,4 @@ val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 3),(vertex_base_ty
 val answer = list_basic_block_all_nodes(ex_graph, Graph.list_nodes(ex_graph));
 val answer = removeduplicate(answer);
 
-(*
-val mymap = check_fixed_point(block_map, Graph.list_nodes(ex_graph), ex_graph)*)
-(*AtomRedBlackMap.listKeys(mymap);*)
+

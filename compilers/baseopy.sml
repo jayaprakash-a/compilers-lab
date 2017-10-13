@@ -66,18 +66,14 @@ fun removeduplicate [] = []
                               [x] @ removeduplicate(xs)
                           else removeduplicate(xs)
 
-fun calculate_predecessor_chain(mygraph,node, prev_list) = let val pred_list = Graph.predecessor(mygraph, Graph.list_nodes(mygraph), node, []) 
+fun calculate_predecessor_chain(mygraph,node) = let val pred_list = Graph.predecessor(mygraph, Graph.list_nodes(mygraph), node, []) 
 						val suc_node_list = Graph.successor(mygraph, node) in
 
                                   if (valid_no_of_links(pred_list)) then 
 								  	  let val suc_list =  Graph.successor(mygraph,hd pred_list) in
                                           if (valid_no_of_links(suc_list)) then 
 											let val x = hd pred_list in
-											if List.find (fn y => (y = node)) (prev_list) <> NONE then 
-												prev_list
-											else 
-                                             (calculate_predecessor_chain(mygraph,x, prev_list@[node]) )@[node]
-												
+                                              (calculate_predecessor_chain(mygraph,x))@[node]
                                             end
                                           else
 
@@ -87,19 +83,14 @@ fun calculate_predecessor_chain(mygraph,node, prev_list) = let val pred_list = G
                                       [node]
                                   end
 
-fun calculate_successor_chain(mygraph, node, prev_list) = let val suc_list = Graph.successor(mygraph, node) 
-						 val pred_node_list = Graph.predecessor(mygraph, Graph.list_nodes(mygraph), node, [])in
+fun calculate_successor_chain(mygraph, node) = let val suc_list = Graph.successor(mygraph, node) 
+						val pred_node_list = Graph.predecessor(mygraph, Graph.list_nodes(mygraph), node, [])in
                                 
 	                                if (valid_no_of_links(suc_list)) then 
-						let val pred_list =  Graph.predecessor(mygraph, Graph.list_nodes(mygraph), hd suc_list, []) in
+										let val pred_list =  Graph.predecessor(mygraph, Graph.list_nodes(mygraph), hd suc_list, []) in
 	                                      if (valid_no_of_links(pred_list)) then 
 	                                      	let val x = hd suc_list in
-	                                          (*[node]@(calculate_successor_chain(mygraph, x,))*)
-												if List.find (fn y => (y = node)) (prev_list) <> NONE then 
-												prev_list
-											else 
-                                             [node]@(calculate_predecessor_chain(mygraph,x, [node]@prev_list) )
-												
+	                                          [node]@(calculate_successor_chain(mygraph, x))
 	                                        end
 	                                      else
 	                                        [node]
@@ -107,7 +98,7 @@ fun calculate_successor_chain(mygraph, node, prev_list) = let val suc_list = Gra
 	                                else
 	                                    [node]
 	                            
-                               end
+end
  (*                                 
 fun exceptlast [] = []
 	| exceptlast [x] = []
@@ -116,13 +107,13 @@ fun exceptlast [] = []
 *)
 
 
-fun list_basic_block_node(mygraph, node) = let val p_chain = removeduplicate(calculate_predecessor_chain(mygraph, node,[]))in
+fun list_basic_block_node(mygraph, node) = let val p_chain = removeduplicate(calculate_predecessor_chain(mygraph, node))in
 
-                                        	let val s_chain = removeduplicate(calculate_successor_chain(mygraph, node,[])) in
+                                        	let val s_chain = removeduplicate(calculate_successor_chain(mygraph, node)) in
                                         	 
 	                                         	p_chain@(tl s_chain)
 	                                        end
-											end
+					end
 (*
 fun list_basic_block_node(mygraph, node) = let val p_chain = calculate_predecessor_chain(mygraph, node)
                                         	val s_chain = calculate_successor_chain(mygraph, node) in
@@ -179,13 +170,13 @@ fun list_basic_block_all_nodes(mygraph, []) = []
 
 
                
-
+(*
 val ex_graph = Graph.mygraph  
 
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 1),(vertex_base_type.Node 2));
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 2),(vertex_base_type.Node 3));
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 3),(vertex_base_type.Node 1));
-
+*)
 (*
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 1),(vertex_base_type.Node 5));
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 5),(vertex_base_type.Node 6));
@@ -198,7 +189,7 @@ val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 8),(vertex_base_ty
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 3),(vertex_base_type.Node 5));
 *)
 
-(*
+
 val ex_graph = Graph.mygraph
 
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 4),(vertex_base_type.Node 2));
@@ -212,7 +203,7 @@ val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 4),(vertex_base_ty
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 4),(vertex_base_type.Node 1));
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 8),(vertex_base_type.Node 4));
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 3),(vertex_base_type.Node 5));
-*)
+
 val answer = list_basic_block_all_nodes(ex_graph, Graph.list_nodes(ex_graph));
 val answer = removeduplicate(answer);
 

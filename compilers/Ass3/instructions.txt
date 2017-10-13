@@ -34,7 +34,7 @@ Graph.successor(ex_graph, vertex_base_type.Node 8);
 Graph.list_nodes(ex_graph);
 
 
-calculate_predecessor_chain(ex_graph, vertex_base_type.Node 1);
+calculate_predecessor_chain(ex_graph, vertex_base_type.Node 1, []);
 calculate_predecessor_chain(ex_graph, vertex_base_type.Node 2);
 calculate_predecessor_chain(ex_graph, vertex_base_type.Node 3);
 calculate_predecessor_chain(ex_graph, vertex_base_type.Node 4);
@@ -83,3 +83,18 @@ valid_no_of_links(p_chain) andalso valid_no_of_links(s_chain);
 val p_chain = Graph.predecessor(ex_graph, Graph.list_nodes(ex_graph), vertex_base_type.Node 8, []);
 val s_chain = Graph.successor(ex_graph, vertex_base_type.Node 8);
 valid_no_of_links(p_chain) andalso valid_no_of_links(s_chain);
+
+
+
+
+
+
+
+
+
+
+
+
+if (List.length( List.filter (fn y => (y = node)) something) = 2 ) then 
+													List.rev (List.filter (fn y => (y <> node)) [node]@something)
+												else something

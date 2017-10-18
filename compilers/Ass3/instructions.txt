@@ -34,7 +34,7 @@ Graph.successor(ex_graph, vertex_base_type.Node 8);
 Graph.list_nodes(ex_graph);
 
 
-calculate_predecessor_chain(ex_graph, vertex_base_type.Node 1, []);
+calculate_predecessor_chain(ex_graph, vertex_base_type.Node 1);
 calculate_predecessor_chain(ex_graph, vertex_base_type.Node 2);
 calculate_predecessor_chain(ex_graph, vertex_base_type.Node 3);
 calculate_predecessor_chain(ex_graph, vertex_base_type.Node 4);

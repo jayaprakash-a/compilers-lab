@@ -66,18 +66,15 @@ fun removeduplicate [] = []
                               [x] @ removeduplicate(xs)
                           else removeduplicate(xs)
 
-fun calculate_predecessor_chain(mygraph,node, prev_list) = let val pred_list = Graph.predecessor(mygraph, Graph.list_nodes(mygraph), node, []) 
-						val suc_node_list = Graph.successor(mygraph, node) in
+
+fun calculate_predecessor_chain(mygraph,node) = let val pred_list = Graph.predecessor(mygraph, Graph.list_nodes(mygraph), node, []) 
+												    val suc_node_list = Graph.successor(mygraph, node) in
 
                                   if (valid_no_of_links(pred_list)) then 
 								  	  let val suc_list =  Graph.successor(mygraph,hd pred_list) in
                                           if (valid_no_of_links(suc_list)) then 
 											let val x = hd pred_list in
-											if List.find (fn y => (y = node)) (prev_list) <> NONE then 
-												prev_list
-											else 
-                                             (calculate_predecessor_chain(mygraph,x, prev_list@[node]) )@[node]
-												
+                                              (calculate_predecessor_chain(mygraph,x))@[node]
                                             end
                                           else
 
@@ -87,27 +84,23 @@ fun calculate_predecessor_chain(mygraph,node, prev_list) = let val pred_list = G
                                       [node]
                                   end
 
-fun calculate_successor_chain(mygraph, node, prev_list) = let val suc_list = Graph.successor(mygraph, node) 
-						 val pred_node_list = Graph.predecessor(mygraph, Graph.list_nodes(mygraph), node, [])in
-                                
+fun calculate_successor_chain(mygraph, node) = let val suc_list = Graph.successor(mygraph, node) 
+												   val pred_node_list = Graph.predecessor(mygraph, Graph.list_nodes(mygraph), node, [])in
+                                if(valid_no_of_links(suc_list) andalso valid_no_of_links(pred_node_list)) then
 	                                if (valid_no_of_links(suc_list)) then 
-						let val pred_list =  Graph.predecessor(mygraph, Graph.list_nodes(mygraph), hd suc_list, []) in
+										let val pred_list =  Graph.predecessor(mygraph, Graph.list_nodes(mygraph), hd suc_list, []) in
 	                                      if (valid_no_of_links(pred_list)) then 
 	                                      	let val x = hd suc_list in
-	                                          (*[node]@(calculate_successor_chain(mygraph, x,))*)
-												if List.find (fn y => (y = node)) (prev_list) <> NONE then 
-												prev_list
-											else 
-                                             [node]@(calculate_predecessor_chain(mygraph,x, [node]@prev_list) )
-												
+	                                          [node]@(calculate_successor_chain(mygraph, x))
 	                                        end
 	                                      else
 	                                        [node]
 	                                    end
 	                                else
 	                                    [node]
-	                            
-                               end
+	                            else
+	                            	[node]
+end
  (*                                 
 fun exceptlast [] = []
 	| exceptlast [x] = []
@@ -116,9 +109,9 @@ fun exceptlast [] = []
 *)
 
 
-fun list_basic_block_node(mygraph, node) = let val p_chain = removeduplicate(calculate_predecessor_chain(mygraph, node,[]))in
+fun list_basic_block_node(mygraph, node) = let val p_chain = removeduplicate(calculate_predecessor_chain(mygraph, node))in
 
-                                        	let val s_chain = removeduplicate(calculate_successor_chain(mygraph, node,[])) in
+                                        	let val s_chain = removeduplicate(calculate_successor_chain(mygraph, node)) in
                                         	 
 	                                         	p_chain@(tl s_chain)
 	                                        end
@@ -175,7 +168,7 @@ fun check_fixed_point(block_map, [], mygraph) = block_map
 			end;
 *)
 fun list_basic_block_all_nodes(mygraph, []) = []
-	| list_basic_block_all_nodes(mygraph, node::nodes) = removeduplicate(list_basic_block_node(mygraph, node))::(list_basic_block_all_nodes(mygraph, nodes)) 
+	| list_basic_block_all_nodes(mygraph, node::nodes) = list_basic_block_node(mygraph, node)::(list_basic_block_all_nodes(mygraph, nodes)) 
 
 
                

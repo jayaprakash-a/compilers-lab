@@ -13,6 +13,12 @@ structure MapT = RedBlackMapFn (
 val mygraph = MapT.empty
 
 (*Function to add edges*)
+(*fun add_node(mygraph,node) = if MapT.find(mygraph,node) = NONE then MapT.insert(mygraph,node,[])
+                                    else
+                                      let val SOME(x) = MapT.find(mygraph,node) in
+                                          MapT.insert(mygraph,node,x)
+                                   
+                                      end*)
 fun add_edge(mygraph,node,adj_ver)  = 
 			if MapT.find(mygraph,node) = NONE then MapT.insert(mygraph,node,[adj_ver])
                                     else
@@ -113,7 +119,7 @@ fun isInList ([], z) = false
 
 structure AtomRedBlackMap =
 	RedBlackMapFn (
-		struct  type ord_key = Node of int
+		struct  datatype ord_key = Node of int
   val compare = fn (Node(x),Node(y)) => Int.compare(x,y)
 end)
 
@@ -128,10 +134,11 @@ val def_map = AtomRedBlackMap.empty
 val ex_graph = Graph.mygraph
 
 
+
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 1),(vertex_base_type.Node 2));
 val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 2),(vertex_base_type.Node 3));
-val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 2),(vertex_base_type.Node 4));
-
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 3),(vertex_base_type.Node 4));
+val ex_graph = Graph.add_edge(ex_graph,(vertex_base_type.Node 1),(vertex_base_type.Node 3));
 
 
 fun add_use(node, use_map, use_nodes ) = if AtomRedBlackMap.find(use_map, node) = NONE then 
@@ -150,11 +157,11 @@ val answer = removeduplicate(answer);
 
 
 fun init_use_list [] = AtomRedBlackMap.empty
-| init_use_list(x::xs) = let map_new = add_use(x, use_map, NONE) in add_use(hd xs,map_new, NONE) end
+| init_use_list(x::xs) = let map_new = add_use(x, use_map, []) in add_use(hd xs,map_new, []) end
 
 
 fun init_def_list [] = AtomRedBlackMap.empty
-| init_def_list(x::xs) = let map_new = add_defx, def_map, NONE) in add_use(hd xs,map_new, NONE) end
+| init_def_list(x::xs) = let map_new = add_def(x, def_map, []) in add_use(hd xs,map_new, []) end
 
 
 val use_map = init_use_list(Graph.list_nodes(ex_graph))
@@ -165,11 +172,13 @@ val def_map = init_def_list(Graph.list_nodes(ex_graph))
 val use_map = add_use(vertex_base_type.Node 1, use_map, ["b", "c"]);
 val use_map = add_use(vertex_base_type.Node 2, use_map, ["a", "c"]);
 val use_map = add_use(vertex_base_type.Node 3, use_map, ["b"]);
+val use_map = add_use(vertex_base_type.Node 3, use_map, ["d"]);
 
 
 val def_map = add_def(vertex_base_type.Node 1, use_map, ["a"]);
 val def_map = add_def(vertex_base_type.Node 2, use_map, ["b"]);
 val def_map = add_def(vertex_base_type.Node 3, use_map, ["c"]);
+val def_map = add_def(vertex_base_type.Node 3, use_map, ["a"]);
 
 
 
@@ -192,8 +201,8 @@ sig
 end
 
 
-fun inlist(y, x::xs) = if x = y then true else findlist(y, xs)
-		| findlist(y, []) = false
+fun inlist(y, x::xs) = if x = y then true else inlist(y, xs)
+		| inlist(y, []) = false
 
 fun union(x, y::ys) = if inlist(y, x)=true then union(x, ys) else union(y::x, ys)
 		| union(x, []) = x
@@ -215,3 +224,8 @@ fun out_map_list(_,_,[]) = []
 												union(use_n,out_map_list(x,in_map,suc_list))
 
 											end
+
+
+
+
+(*fun in_out_calc(x::xs, in_map,out_map,use_map,def_map) = let in_calc = in_map_list(x*)

@@ -113,8 +113,8 @@ fun isInList ([], z) = false
 
 structure AtomRedBlackMap =
 	RedBlackMapFn (
-		struct  type ord_key = int list
-  val compare = fn (x,y) => x=y
+		struct  type ord_key = Node of int
+  val compare = fn (Node(x),Node(y)) => Int.compare(x,y)
 end)
 
 
@@ -149,6 +149,30 @@ val answer = list_basic_block_all_nodes(ex_graph, Graph.list_nodes(ex_graph));
 val answer = removeduplicate(answer);
 
 
+fun init_use_list [] = AtomRedBlackMap.empty
+| init_use_list(x::xs) = let map_new = add_use(x, use_map, NONE) in add_use(hd xs,map_new, NONE) end
+
+
+fun init_def_list [] = AtomRedBlackMap.empty
+| init_def_list(x::xs) = let map_new = add_defx, def_map, NONE) in add_use(hd xs,map_new, NONE) end
+
+
+val use_map = init_use_list(Graph.list_nodes(ex_graph))
+val def_map = init_def_list(Graph.list_nodes(ex_graph))
+
+
+
+val use_map = add_use(vertex_base_type.Node 1, use_map, ["b", "c"]);
+val use_map = add_use(vertex_base_type.Node 2, use_map, ["a", "c"]);
+val use_map = add_use(vertex_base_type.Node 3, use_map, ["b"]);
+
+
+val def_map = add_def(vertex_base_type.Node 1, use_map, ["a"]);
+val def_map = add_def(vertex_base_type.Node 2, use_map, ["b"]);
+val def_map = add_def(vertex_base_type.Node 3, use_map, ["c"]);
+
+
+
 fun len [] = 0
 | len(x::xs) = 1 + len(xs)
 
@@ -168,5 +192,26 @@ sig
 end
 
 
+fun inlist(y, x::xs) = if x = y then true else findlist(y, xs)
+		| findlist(y, []) = false
 
+fun union(x, y::ys) = if inlist(y, x)=true then union(x, ys) else union(y::x, ys)
+		| union(x, []) = x
 
+fun diff(x::xs, y) = if inlist(x, y)=true then diff(xs, y) else diff(xs, x::y)
+		| diff([], y) = y
+
+fun in_map_list(x, use_map,def_map,out_map) = let SOME(use_n) = AtomRedBlackMap.find(use_map, x) in 
+											let SOME(out_n) = AtomRedBlackMap.find(out_map, x) in 
+												let SOME(def_n) = AtomRedBlackMap.find(def_map,x) in
+
+													union(use_n,dif(out_n,def_n))
+												end
+												end
+											end
+fun out_map_list(_,_,[]) = []
+
+| out_map_list(x, in_map, suc::suc_list) = let SOME(in_n) = AtomRedBlackMap.find(in_map, suc) in 
+												union(use_n,out_map_list(x,in_map,suc_list))
+
+											end

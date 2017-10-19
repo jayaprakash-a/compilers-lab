@@ -175,10 +175,10 @@ val use_map = add_use(vertex_base_type.Node 3, use_map, ["b"]);
 val use_map = add_use(vertex_base_type.Node 3, use_map, ["d"]);
 
 
-val def_map = add_def(vertex_base_type.Node 1, use_map, ["a"]);
-val def_map = add_def(vertex_base_type.Node 2, use_map, ["b"]);
-val def_map = add_def(vertex_base_type.Node 3, use_map, ["c"]);
-val def_map = add_def(vertex_base_type.Node 3, use_map, ["a"]);
+val def_map = add_def(vertex_base_type.Node 1, def_map, ["a"]);
+val def_map = add_def(vertex_base_type.Node 2, def_map, ["b"]);
+val def_map = add_def(vertex_base_type.Node 3, def_map, ["c"]);
+val def_map = add_def(vertex_base_type.Node 3, def_map, ["a"]);
 
 
 
@@ -228,4 +228,9 @@ fun out_map_list(_,_,[]) = []
 
 
 
-(*fun in_out_calc(x::xs, in_map,out_map,use_map,def_map) = let in_calc = in_map_list(x*)
+fun fixed_point_in_out_calc(x::xs, in_map,out_map,use_map,def_map) = let val in_calc = in_map_list(x,use_map,def_map,out_map) 
+									val out_calc = out_map_list(x,in_map, Graph.successor(ex_graph, x))
+										in
+
+
+									end
